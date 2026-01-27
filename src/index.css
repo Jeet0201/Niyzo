@@ -1,0 +1,419 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* NIYZO Design System - Modern EdTech Startup */
+
+@layer base {
+  :root {
+    /* NIYZO Brand Colors - Black & White Theme */
+    --background: 0 0% 0%; /* #000000 - Black */
+    --foreground: 0 0% 100%; /* #FFFFFF - White */
+    
+    --card: 0 0% 10%; /* #1A1A1A - Dark gray */
+    --card-foreground: 0 0% 100%; /* #FFFFFF */
+    --card-border: 0 0% 20%; /* #333333 */
+    
+    --primary: 0 0% 100%; /* #FFFFFF - White */
+    --primary-foreground: 0 0% 0%; /* #000000 */
+    --primary-hover: 0 0% 95%;
+    
+    --secondary: 0 0% 75%; /* #BFBFBF - Light gray */
+    --secondary-foreground: 0 0% 0%;
+    
+    --success: 158 64% 39%; /* #059669 */
+    --success-foreground: 0 0% 100%;
+    
+    --muted: 0 0% 25%; /* #404040 - Medium gray */
+    --muted-foreground: 0 0% 85%; /* #D9D9D9 */
+    
+    --accent: 0 0% 100%; /* #FFFFFF */
+    --accent-foreground: 0 0% 0%;
+    
+    --border: 0 0% 20%; /* #333333 */
+    --input: 0 0% 20%;
+    --ring: 0 0% 100%; /* #FFFFFF */
+    
+    /* Design Tokens - Black Theme Optimized */
+    --radius: 0.75rem;
+    --shadow-subtle: 0 1px 3px 0 hsl(0 0% 100% / 0.1);
+    --shadow-card: 0 4px 6px -1px hsl(0 0% 100% / 0.1);
+    --shadow-lift: 0 10px 15px -3px hsl(0 0% 100% / 0.1);
+    --shadow-hero: 0 20px 25px -5px hsl(0 0% 100% / 0.1);
+    
+    /* Gradients - Black & White Theme */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(0 0% 90%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(0 0% 15%) 100%);
+    
+    /* Animation Variables */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s ease;
+    --bounce-subtle: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  /* Button Variants */
+  .btn-hero {
+    @apply bg-gradient-to-r from-primary to-primary-hover text-primary-foreground 
+           px-8 py-4 rounded-xl font-semibold text-lg 
+           shadow-lg hover:shadow-xl hover:scale-105 
+           transition-all duration-300 ease-out;
+  }
+  
+  .btn-secondary {
+    @apply bg-card text-card-foreground border-2 border-border
+           px-6 py-3 rounded-lg font-medium
+           hover:border-primary hover:text-primary
+           transition-all duration-200;
+  }
+  
+  /* Card Components */
+  .card-lift {
+    @apply bg-card border border-card-border rounded-xl p-6
+           hover:-translate-y-1 transition-all duration-300 ease-out;
+    box-shadow: var(--shadow-card);
+  }
+  
+  .card-lift:hover {
+    box-shadow: var(--shadow-lift);
+  }
+  
+  .card-professor {
+    @apply card-lift cursor-pointer hover:border-primary hover:shadow-xl hover:scale-[1.02];
+    transition: all 0.3s var(--bounce-subtle);
+  }
+  
+  /* Animations */
+  .fade-in-up {
+    @apply opacity-0 translate-y-8;
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  .fade-in-up-delay-1 {
+    @apply fade-in-up;
+    animation-delay: 0.2s;
+  }
+  
+  .fade-in-up-delay-2 {
+    @apply fade-in-up;
+    animation-delay: 0.4s;
+  }
+
+  /* Hero Section Animations */
+  .hero-title {
+    animation: slideInLeft 0.8s ease-out forwards;
+  }
+
+  .hero-subtitle {
+    animation: slideInRight 0.8s ease-out forwards;
+    animation-delay: 0.2s;
+  }
+
+  .hero-button {
+    animation: scaleIn 0.6s ease-out forwards;
+    animation-delay: 0.4s;
+  }
+
+  .hero-button:hover {
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  .scroll-indicator {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Hero decorative blobs and cursor follower */
+  .hero-blob {
+    position: absolute;
+    filter: blur(36px) saturate(120%);
+    opacity: 0.55;
+    pointer-events: none;
+    transform: translate3d(0,0,0);
+  }
+
+  .hero-blob-1 {
+    width: 540px;
+    height: 540px;
+    left: -120px;
+    top: -80px;
+    background: radial-gradient(circle at 20% 30%, rgba(67,56,202,0.18), rgba(67,56,202,0.06) 40%, transparent 70%);
+  }
+
+  .hero-blob-2 {
+    width: 420px;
+    height: 420px;
+    right: -100px;
+    top: 40px;
+    background: radial-gradient(circle at 70% 40%, rgba(99,102,241,0.12), rgba(99,102,241,0.04) 45%, transparent 80%);
+  }
+
+  .hero-blob-3 {
+    width: 300px;
+    height: 300px;
+    left: 30%;
+    bottom: -60px;
+    background: radial-gradient(circle at 30% 70%, rgba(139,92,246,0.12), rgba(139,92,246,0.03) 50%, transparent 80%);
+  }
+
+  .cursor-follower {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 60;
+    background: radial-gradient(circle at 30% 30%, rgba(67,56,202,0.1), rgba(0,0,0,0));
+    transform: translate3d(-9999px, -9999px, 0) scale(1);
+    transition: background 240ms ease, transform 240ms ease;
+    mix-blend-mode: screen;
+  }
+
+  @media (max-width: 768px) {
+    .hero-blob-1, .hero-blob-2, .hero-blob-3, .cursor-follower { display: none; }
+  }
+  
+  /* Header Blur */
+  .header-blur {
+    @apply backdrop-blur-md bg-card/80 border-b border-border/50;
+  }
+  
+  /* Typewriter Effect */
+  .typewriter {
+    overflow: hidden;
+    border-right: 0.15em solid hsl(var(--primary));
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: 0.05em;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: hsl(var(--primary)); }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
+  }
+}
+
+/* Card Styling */
+.card-lift {
+  box-shadow: var(--shadow-card);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lift);
+}
+
+/* How It Works Cards */
+.how-it-works-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-card);
+  display: block;
+  width: 100%;
+}
+
+.how-it-works-card:hover {
+  border-color: hsl(var(--primary));
+  box-shadow: 0 15px 30px rgba(255, 255, 255, 0.15);
+  transform: translateY(-8px);
+}
+
+/* Smooth transform & interactive utilities */
+.smooth-transform {
+  will-change: transform, opacity;
+  transition: transform 260ms var(--bounce-subtle), opacity 260ms ease;
+}
+
+.interactive-glow {
+  transition: box-shadow 260ms ease, transform 200ms var(--bounce-subtle);
+}
+
+.btn-glow:hover {
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.18);
+  transform: translateY(-3px) scale(1.02);
+}
+
+.perspective-3d {
+  perspective: 1000px;
+}
+
+.card-tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.45s var(--bounce-subtle), box-shadow 260ms ease;
+}
+
+.no-select {
+  user-select: none;
+}
+
+/* Mentor card (Apple-like) */
+.mentor-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
+  padding: 1.25rem;
+  transition: transform 380ms var(--bounce-subtle), box-shadow 320ms ease, border-color 220ms ease;
+  will-change: transform, box-shadow;
+  perspective: 1000px;
+}
+
+.mentor-card-inner {
+  transform-origin: center center;
+  transition: transform 420ms var(--bounce-subtle), box-shadow 320ms ease;
+  border-radius: 0.75rem;
+}
+
+.mentor-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12);
+  border-color: hsl(var(--primary));
+}
+
+.mentor-name {
+  transition: color 260ms ease, transform 260ms ease;
+}
+
+.mentor-subject {
+  transition: color 260ms ease;
+}
+
+.mentor-card:focus-within .mentor-name,
+.mentor-card:hover .mentor-name {
+  color: hsl(var(--primary));
+  transform: translateY(-2px);
+}
+
+.mentor-card:focus-within .mentor-subject,
+.mentor-card:hover .mentor-subject {
+  color: hsl(var(--primary));
+}
+
+/* Recent answers accent */
+.answer-mentor {
+  transition: color 260ms ease, transform 260ms ease;
+}
+.answer-card:hover .answer-mentor {
+  color: hsl(var(--primary));
+  transform: translateY(-2px);
+}
+
