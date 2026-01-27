@@ -23,6 +23,12 @@ const CTA = () => {
           <p className="text-white/70 text-sm mt-6 fade-in-up-delay-2">
             Limited spots available • No credit card required
           </p>
+          
+          <div className="mt-8 fade-in-up-delay-3">
+            <p className="text-white/80 text-sm">
+              Questions? Email us at{' '}<a href="mailto:niyzo.official@gmail.com" className="text-white font-semibold hover:underline">niyzo.official@gmail.com</a>
+            </p>
+          </div>
         </div>
       </div>
     </section>
