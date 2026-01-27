@@ -23,6 +23,11 @@ const Header = () => {
     { label: 'Join', href: '#cta' }
   ];
 
+  const handleContactClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // The mailto: protocol will handle opening the email client
+    // No need to prevent default here
+  };
+
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -39,7 +44,7 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex space-x-8 items-center">
             {navItems.map((item) => (
               item.href.startsWith('#') ? (
                 <a
@@ -59,6 +64,15 @@ const Header = () => {
                 </Link>
               )
             ))}
+            
+            {/* Contact Button */}
+            <a
+              href="mailto:niyzo.official@gmail.com"
+              onClick={handleContactClick}
+              className="inline-flex items-center px-4 py-2 rounded-lg bg-primary text-white font-semibold transition-all duration-300 ease-out hover:bg-primary/90 hover:shadow-lg hover:scale-105 active:scale-95"
+            >
+              Contact
+            </a>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -97,6 +111,15 @@ const Header = () => {
                   </Link>
                 )
               ))}
+              
+              {/* Mobile Contact Button */}
+              <a
+                href="mailto:niyzo.official@gmail.com"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-3 py-2 rounded-lg bg-primary text-white font-semibold transition-all duration-300 ease-out hover:bg-primary/90 active:scale-95 mt-2"
+              >
+                Contact
+              </a>
             </div>
           </div>
         )}
