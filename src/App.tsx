@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index, { NotFound } from "./pages/Index";
+import About from "./pages/About";
 import AdminPanel from "./pages/AdminPanel";
 import MentorQuestions, { MentorDashboard } from "./pages/MentorQuestions";
 import { AuthProvider } from "./context/AuthContext";
@@ -22,6 +23,7 @@ const App = () => (
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/mentor-login" element={<MentorLogin />} />
             <Route path="/mentor-signup" element={<MentorSignup />} />
