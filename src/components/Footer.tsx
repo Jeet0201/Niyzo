@@ -38,9 +38,6 @@ const Footer = () => {
           <p className="text-secondary text-sm">
             © 2024 NIYZO. All rights reserved. Empowering the next generation of learners.
           </p>
-          <p className="text-secondary text-sm mt-4">
-            Email: <a href="mailto:niyzo.official@gmail.com" className="text-primary hover:underline">niyzo.official@gmail.com</a>
-          </p>
         </div>
       </div>
     </footer>
