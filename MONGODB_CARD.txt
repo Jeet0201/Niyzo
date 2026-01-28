@@ -1,0 +1,207 @@
+# 🎯 MongoDB Setup - Quick Reference Card
+
+## ✅ STATUS: READY TO USE
+
+Your backend is configured for **local MongoDB only** at:
+```
+mongodb://localhost:27017/niyzo
+```
+
+---
+
+## 🚀 START IN 3 COMMANDS
+
+```powershell
+# 1. Start MongoDB
+net start MongoDB
+
+# 2. Start backend (in new terminal)
+cd C:\Niyzo Project\server
+node index.js
+
+# 3. Test (in another terminal or browser)
+curl -X POST http://localhost:4000/api/questions \
+  -H "Content-Type: application/json" \
+  -d '{"studentName":"Test","contact":"test@ex.com","subject":"JS","question":"test?"}'
+```
+
+---
+
+## 📊 EXPECTED OUTPUT
+
+### Server Startup
+```
+🔄 Connecting to MongoDB...
+✅ MongoDB Connected
+   URI: mongodb://localhost:27017/niyzo
+   Database: niyzo
+   Status: Ready for data operations
+
+============================================================
+🚀 API SERVER STARTED
+============================================================
+📍 Server: http://localhost:4000
+📊 Database: MongoDB (niyzo)
+📬 Connection: mongodb://localhost:27017/niyzo
+============================================================
+```
+
+### Data Submission
+```
+📝 Received new question submission:
+   Student: Test
+   Contact: test@ex.com (email)
+   Subject: JS
+✅ Question saved to MongoDB:
+   ID: 67abc123def456ghi789jk0
+   Database: niyzo
+   Collection: questions
+```
+
+---
+
+## 🔌 CONNECTION DETAILS
+
+| Property | Value |
+|----------|-------|
+| Host | localhost |
+| Port | 27017 |
+| Database | niyzo |
+| Type | Local (no cloud) |
+| URI | mongodb://localhost:27017/niyzo |
+
+---
+
+## 🗄️ COLLECTIONS CREATED
+
+1. **questions** - Student form submissions
+2. **mentors** - Mentor profiles (auto-seeded)
+3. **professors** - Professor profiles
+
+---
+
+## 📝 SAMPLE DATA SAVED
+
+```json
+{
+  "_id": "67abc123...",
+  "studentName": "John Doe",
+  "contact": "john@example.com",
+  "contactType": "email",
+  "subject": "JavaScript",
+  "question": "How do closures work?",
+  "status": "New",
+  "createdAt": "2026-01-28T10:30:00Z",
+  "updatedAt": "2026-01-28T10:30:00Z"
+}
+```
+
+---
+
+## 🔍 VIEW DATA
+
+### MongoDB Compass
+1. Open Compass → Connect → Browse to `niyzo` → `questions`
+
+### mongosh
+```bash
+mongosh
+use niyzo
+db.questions.find().pretty()
+```
+
+---
+
+## 🛠️ TROUBLESHOOT
+
+### MongoDB not running?
+```powershell
+net start MongoDB
+```
+
+### Can't connect?
+```powershell
+# Check status
+Get-Service MongoDB
+
+# Verify port
+netstat -ano | findstr :27017
+
+# Test connection
+mongosh --host localhost --port 27017
+```
+
+### Server won't start?
+1. Ensure MongoDB is running first
+2. Check no other app uses port 4000
+3. Check `server/index.js` for syntax errors
+
+---
+
+## 📁 KEY FILES
+
+| File | Change |
+|------|--------|
+| `server/index.js` | ✅ MongoDB config updated |
+| `server/.env` | (Optional) Can set `MONGODB_URI` |
+
+---
+
+## 💾 DATA PERSISTENCE
+
+- **Stored at**: `C:\data\db` (or MongoDB default)
+- **Persists**: After server restarts
+- **Backup**: Use `mongodump --db niyzo`
+- **Restore**: Use `mongorestore --db niyzo`
+
+---
+
+## 🎯 FEATURES WORKING
+
+✅ Backend connects to local MongoDB
+✅ Form data validated before save
+✅ Data normalized (lowercase, digits-only)
+✅ Contact type tracked (email/mobile)
+✅ Fake numbers blocked (1234567890, etc)
+✅ Console logs confirm saves
+✅ Data persists permanently
+
+---
+
+## 📞 USEFUL COMMANDS
+
+```powershell
+# Start/Stop
+net start MongoDB
+net stop MongoDB
+
+# Check Status
+Get-Service MongoDB
+
+# Connect
+mongosh
+
+# Backup
+mongodump --db niyzo --out C:\backup
+
+# Restore
+mongorestore --db niyzo C:\backup\niyzo
+```
+
+---
+
+## 🎉 YOU'RE READY!
+
+✅ MongoDB configured (local only)
+✅ Backend connected and logging
+✅ Data validation active
+✅ Persistence enabled
+
+Start your server and begin saving data! 🚀
+
+---
+
+**Last Updated**: January 28, 2026
+**Configuration Type**: Development (Local MongoDB)
+**Database**: niyzo
+**Status**: ✅ READY
