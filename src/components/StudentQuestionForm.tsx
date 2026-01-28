@@ -69,11 +69,6 @@ const StudentQuestionForm: React.FC = () => {
       return;
     }
     
-    if (!contact.trim()) {
-      toast({ title: 'Contact Required', description: 'Please provide your email or mobile number.', variant: 'destructive' });
-      return;
-    }
-    
     if (!subject.trim()) {
       toast({ title: 'Subject Required', description: 'Please specify the subject/topic of your question.', variant: 'destructive' });
       return;
@@ -81,19 +76,6 @@ const StudentQuestionForm: React.FC = () => {
     
     if (!question.trim()) {
       toast({ title: 'Question Required', description: 'Please describe your question in detail.', variant: 'destructive' });
-      return;
-    }
-    
-    // Validate contact field (should be email or mobile)
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const mobileRegex = /^[\+]?[1-9][\d]{0,15}$/;
-    
-    if (!emailRegex.test(contact) && !mobileRegex.test(contact.replace(/[\s\-\(\)]/g, ''))) {
-      toast({ 
-        title: 'Invalid Contact', 
-        description: 'Please provide a valid email address or mobile number.', 
-        variant: 'destructive' 
-      });
       return;
     }
     
@@ -112,7 +94,6 @@ const StudentQuestionForm: React.FC = () => {
     try {
       const questionData = {
         studentName,
-        contact,
         subject,
         question,
         assignedMentorId: assignedMentorId
@@ -123,7 +104,6 @@ const StudentQuestionForm: React.FC = () => {
       console.log('✅ Question created successfully:', result);
       const selectedMentor = mentors.find(m => m.id === assignedMentorId);
       setStudentName('');
-      setContact('');
       setSubject('');
       setQuestion('');
       setAssignedMentorId('');
@@ -286,29 +266,16 @@ const StudentQuestionForm: React.FC = () => {
                 {/* Student Information */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-foreground border-b border-border pb-2">Your Information</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="studentName" className="text-sm font-medium">Your Name *</Label>
-                      <Input 
-                        id="studentName" 
-                        value={studentName} 
-                        onChange={(e) => setStudentName(e.target.value)} 
-                        placeholder="Enter your full name" 
-                        className="mt-1"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="studentEmail" className="text-sm font-medium">Contact (Email or Mobile) *</Label>
-                      <Input 
-                        id="studentEmail" 
-                        value={studentEmail} 
-                        onChange={(e) => setStudentEmail(e.target.value)} 
-                        placeholder="your.email@example.com or +1234567890" 
-                        className="mt-1"
-                        required
-                      />
-                    </div>
+                  <div>
+                    <Label htmlFor="studentName" className="text-sm font-medium">Your Name *</Label>
+                    <Input 
+                      id="studentName" 
+                      value={studentName} 
+                      onChange={(e) => setStudentName(e.target.value)} 
+                      placeholder="Enter your full name" 
+                      className="mt-1"
+                      required
+                    />
                   </div>
                 </div>
 
