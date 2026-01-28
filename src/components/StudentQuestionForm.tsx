@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 const StudentQuestionForm: React.FC = () => {
   const { toast } = useToast();
   const [studentName, setStudentName] = useState('');
-  const [studentEmail, setStudentEmail] = useState('');
+  const [contact, setContact] = useState('');
   const [subject, setSubject] = useState('');
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(true);
@@ -61,7 +61,7 @@ const StudentQuestionForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     console.log('=== FORM SUBMIT STARTED ===');
     e.preventDefault();
-    console.log('Form data:', { studentName, studentEmail, subject, question, assignedMentorId });
+    console.log('Form data:', { studentName, contact, subject, question, assignedMentorId });
     
     // Validate all required fields
     if (!studentName.trim()) {
@@ -69,7 +69,7 @@ const StudentQuestionForm: React.FC = () => {
       return;
     }
     
-    if (!studentEmail.trim()) {
+    if (!contact.trim()) {
       toast({ title: 'Contact Required', description: 'Please provide your email or mobile number.', variant: 'destructive' });
       return;
     }
@@ -88,7 +88,7 @@ const StudentQuestionForm: React.FC = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const mobileRegex = /^[\+]?[1-9][\d]{0,15}$/;
     
-    if (!emailRegex.test(studentEmail) && !mobileRegex.test(studentEmail.replace(/[\s\-\(\)]/g, ''))) {
+    if (!emailRegex.test(contact) && !mobileRegex.test(contact.replace(/[\s\-\(\)]/g, ''))) {
       toast({ 
         title: 'Invalid Contact', 
         description: 'Please provide a valid email address or mobile number.', 
@@ -112,18 +112,18 @@ const StudentQuestionForm: React.FC = () => {
     try {
       const questionData = {
         studentName,
-        studentEmail,
+        contact,
         subject,
         question,
         assignedMentorId: assignedMentorId
       };
       console.log('Final question data to submit:', questionData);
-      console.log('Calling api.createQuestion...');
+      console.log('Calling api.createQuestion with payload:', questionData);
       const result = await api.createQuestion(questionData);
       console.log('✅ Question created successfully:', result);
       const selectedMentor = mentors.find(m => m.id === assignedMentorId);
       setStudentName('');
-      setStudentEmail('');
+      setContact('');
       setSubject('');
       setQuestion('');
       setAssignedMentorId('');

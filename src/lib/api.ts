@@ -38,7 +38,7 @@ export const api = {
     request('/api/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) }),
   getHealth: () => request('/api/health'),
   // Questions
-  createQuestion: (payload: { studentName: string; studentEmail?: string; subject: string; question: string; assignedMentorId?: string }) =>
+  createQuestion: (payload: { studentName: string; contact?: string; subject: string; question: string; assignedMentorId?: string }) =>
     request('/api/questions', { method: 'POST', body: JSON.stringify(payload) }),
   getQuestions: () => request('/api/questions', { auth: true }),
   updateQuestion: (id: string, patch: any) => request(`/api/questions/${id}`, { method: 'PATCH', body: JSON.stringify(patch), auth: true }),
