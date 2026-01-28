@@ -232,7 +232,7 @@ const AdminPanel = () => {
       try {
         const [q, m] = await Promise.all([api.getQuestions(), api.getMentors()]);
         const qNormalized: Question[] = (q as any[]).map((it) => ({
-          id: it.id || it._id,
+          id: it._id,
           studentName: it.studentName,
           studentEmail: it.studentEmail,
           subject: it.subject,
