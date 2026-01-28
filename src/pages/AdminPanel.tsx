@@ -1,4 +1,4 @@
-  import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
-import { Pencil, Trash2, Plus, ArrowLeft, List } from 'lucide-react';
+import { Pencil, Trash2, Plus, ArrowLeft, List, Eye, AlertTriangle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/api';
@@ -21,6 +21,8 @@ interface Question {
   studentEmail?: string;
   subject: string;
   question: string;
+  answerText?: string;
+  answeredAt?: string;
   createdAt: number;
   status: QuestionStatus;
   assignedMentorId?: string;
@@ -45,6 +47,11 @@ const AdminPanel = () => {
   const [editingMentor, setEditingMentor] = useState<Mentor | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [viewingQuestion, setViewingQuestion] = useState<Question | null>(null);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [deletingQuestionId, setDeletingQuestionId] = useState<string | null>(null);
+  
   const [formData, setFormData] = useState({
     name: '',
     subject: '',
@@ -185,6 +192,35 @@ const AdminPanel = () => {
     }
   };
 
+  const handleViewQuestion = (question: Question) => {
+    setViewingQuestion(question);
+    setIsViewDialogOpen(true);
+  };
+
+  const handleDeleteQuestion = async () => {
+    if (!deletingQuestionId) return;
+    
+    try {
+      await api.deleteQuestion(deletingQuestionId);
+      
+      // Remove from local state
+      setQuestions(questions.filter(q => q.id !== deletingQuestionId));
+      setIsDeleteConfirmOpen(false);
+      setDeletingQuestionId(null);
+      
+      toast({
+        title: "Success",
+        description: "Question and answer deleted successfully. It will no longer appear publicly."
+      });
+    } catch (err: any) {
+      toast({
+        title: 'Failed to delete question',
+        description: err.message || 'Please try again',
+        variant: 'destructive'
+      });
+    }
+  };
+
   const resetForm = () => {
     setFormData({ name: '', subject: '', university: '', status: 'Available' });
     setEditingMentor(null);
@@ -201,6 +237,8 @@ const AdminPanel = () => {
           studentEmail: it.studentEmail,
           subject: it.subject,
           question: it.question,
+          answerText: it.answerText,
+          answeredAt: it.answeredAt,
           createdAt: new Date(it.createdAt).getTime(),
           status: it.status,
           assignedMentorId: it.assignedMentorId || undefined,
@@ -447,6 +485,172 @@ const AdminPanel = () => {
             </Table>
           </CardContent>
         </Card>
+
+        {/* CHANGE 1: Question Management Section */}
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle>Question & Answer Management</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {questions.length === 0 ? (
+                <div className="text-sm text-muted-foreground text-center py-8">
+                  No questions yet
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Student</TableHead>
+                        <TableHead>Subject</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Answer Status</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {questions.map((question) => (
+                        <TableRow key={question.id}>
+                          <TableCell className="font-medium">{question.studentName}</TableCell>
+                          <TableCell>{question.subject}</TableCell>
+                          <TableCell>
+                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                              question.status === 'Resolved' 
+                                ? 'bg-success/10 text-success border border-success/20' 
+                                : question.status === 'In Progress'
+                                ? 'bg-yellow-100 text-yellow-800 border border-yellow-200'
+                                : 'bg-muted text-muted-foreground border border-border'
+                            }`}>
+                              {question.status}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            {question.answerText ? (
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                                ✓ Answered
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
+                                Pending
+                              </span>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex space-x-2">
+                              {question.answerText && (
+                                <Dialog open={isViewDialogOpen && viewingQuestion?.id === question.id} onOpenChange={setIsViewDialogOpen}>
+                                  <DialogTrigger asChild>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => handleViewQuestion(question)}
+                                    >
+                                      <Eye className="h-4 w-4" />
+                                    </Button>
+                                  </DialogTrigger>
+                                  <DialogContent className="max-w-2xl" aria-describedby={undefined}>
+                                    <DialogHeader>
+                                      <DialogTitle>View Answer</DialogTitle>
+                                    </DialogHeader>
+                                    {viewingQuestion && (
+                                      <div className="space-y-4">
+                                        <div>
+                                          <Label className="font-semibold">Student</Label>
+                                          <p className="text-sm text-muted-foreground">{viewingQuestion.studentName}</p>
+                                        </div>
+                                        <div>
+                                          <Label className="font-semibold">Subject</Label>
+                                          <p className="text-sm text-muted-foreground">{viewingQuestion.subject}</p>
+                                        </div>
+                                        <div>
+                                          <Label className="font-semibold">Question</Label>
+                                          <p className="text-sm text-foreground mt-1 whitespace-pre-wrap">{viewingQuestion.question}</p>
+                                        </div>
+                                        <div>
+                                          <Label className="font-semibold">Answer</Label>
+                                          <p className="text-sm text-foreground mt-1 whitespace-pre-wrap bg-blue-50 p-3 rounded border border-blue-200">
+                                            {viewingQuestion.answerText}
+                                          </p>
+                                        </div>
+                                        {viewingQuestion.answeredAt && (
+                                          <div>
+                                            <Label className="font-semibold">Answered At</Label>
+                                            <p className="text-sm text-muted-foreground">
+                                              {new Date(viewingQuestion.answeredAt).toLocaleString()}
+                                            </p>
+                                          </div>
+                                        )}
+                                      </div>
+                                    )}
+                                  </DialogContent>
+                                </Dialog>
+                              )}
+                              {question.status === 'Resolved' && question.answerText && (
+                                <Button
+                                  variant="destructive"
+                                  size="sm"
+                                  onClick={() => {
+                                    setDeletingQuestionId(question.id);
+                                    setIsDeleteConfirmOpen(true);
+                                  }}
+                                  title="Delete this answer - it will be removed from public display"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              )}
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Delete Question Confirmation Dialog */}
+        <Dialog open={isDeleteConfirmOpen} onOpenChange={setIsDeleteConfirmOpen}>
+          <DialogContent aria-describedby={undefined}>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2 text-destructive">
+                <AlertTriangle className="h-5 w-5" />
+                Delete Answer
+              </DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete this answer? This action cannot be undone.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <p className="text-sm text-red-800">
+                  <strong>Warning:</strong> This answer will be immediately removed from the "Recent Mentor Answers" section on your public website.
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setIsDeleteConfirmOpen(false);
+                    setDeletingQuestionId(null);
+                  }}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={handleDeleteQuestion}
+                  className="flex-1"
+                >
+                  Delete Answer
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
 
         {/* Edit Dialog */}
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>

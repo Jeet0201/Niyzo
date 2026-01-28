@@ -11,7 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 const StudentQuestionForm: React.FC = () => {
   const { toast } = useToast();
   const [studentName, setStudentName] = useState('');
-  const [contact, setContact] = useState('');
+  const [studentEmail, setStudentEmail] = useState('');
+  const [studentPhone, setStudentPhone] = useState('');
   const [subject, setSubject] = useState('');
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(true);
@@ -61,12 +62,45 @@ const StudentQuestionForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     console.log('=== FORM SUBMIT STARTED ===');
     e.preventDefault();
-    console.log('Form data:', { studentName, contact, subject, question, assignedMentorId });
+    console.log('Form data:', { studentName, studentEmail, studentPhone, subject, question, assignedMentorId });
     
     // Validate all required fields
     if (!studentName.trim()) {
       toast({ title: 'Name Required', description: 'Please enter your full name.', variant: 'destructive' });
       return;
+    }
+
+    // CHANGE 2: Validate student contact (email OR phone required)
+    if (!studentEmail.trim() && !studentPhone.trim()) {
+      toast({ 
+        title: 'Contact Required', 
+        description: 'Please provide either your email address or phone number so the mentor can contact you.', 
+        variant: 'destructive' 
+      });
+      return;
+    }
+
+    // Validate email format if provided
+    if (studentEmail.trim() && !studentEmail.match(/.+@.+\..+/)) {
+      toast({ 
+        title: 'Invalid Email', 
+        description: 'Please enter a valid email address.', 
+        variant: 'destructive' 
+      });
+      return;
+    }
+
+    // Validate phone format if provided (10 digits only)
+    if (studentPhone.trim()) {
+      const digitsOnly = studentPhone.replace(/\D/g, '');
+      if (digitsOnly.length !== 10) {
+        toast({ 
+          title: 'Invalid Phone', 
+          description: 'Phone number must be exactly 10 digits.', 
+          variant: 'destructive' 
+        });
+        return;
+      }
     }
     
     if (!subject.trim()) {
@@ -94,6 +128,8 @@ const StudentQuestionForm: React.FC = () => {
     try {
       const questionData = {
         studentName,
+        studentEmail: studentEmail.trim(),
+        studentPhone: studentPhone.replace(/\D/g, ''), // Store digits only
         subject,
         question,
         assignedMentorId: assignedMentorId
@@ -104,6 +140,8 @@ const StudentQuestionForm: React.FC = () => {
       console.log('✅ Question created successfully:', result);
       const selectedMentor = mentors.find(m => m.id === assignedMentorId);
       setStudentName('');
+      setStudentEmail('');
+      setStudentPhone('');
       setSubject('');
       setQuestion('');
       setAssignedMentorId('');
@@ -276,6 +314,45 @@ const StudentQuestionForm: React.FC = () => {
                       className="mt-1"
                       required
                     />
+                  </div>
+
+                  {/* CHANGE 2: Student Contact Field */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="studentEmail" className="text-sm font-medium">
+                        Email Address
+                        <span className="text-muted-foreground text-xs ml-1">(or Phone below) *</span>
+                      </Label>
+                      <Input 
+                        id="studentEmail" 
+                        type="email"
+                        value={studentEmail} 
+                        onChange={(e) => setStudentEmail(e.target.value)} 
+                        placeholder="your.email@example.com" 
+                        className="mt-1"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        We'll use this to send you the answer
+                      </p>
+                    </div>
+                    <div>
+                      <Label htmlFor="studentPhone" className="text-sm font-medium">
+                        Phone Number (10 digits)
+                        <span className="text-muted-foreground text-xs ml-1">(or Email above) *</span>
+                      </Label>
+                      <Input 
+                        id="studentPhone" 
+                        type="tel"
+                        value={studentPhone} 
+                        onChange={(e) => setStudentPhone(e.target.value.replace(/\D/g, ''))} 
+                        placeholder="1234567890" 
+                        className="mt-1"
+                        maxLength="10"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        10 digits only, we'll call or text you
+                      </p>
+                    </div>
                   </div>
                 </div>
 
