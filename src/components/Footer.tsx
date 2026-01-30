@@ -25,6 +25,9 @@ const Footer = () => {
                 src="/niyzo-logo.svg"
                 alt="NIYZO"
                 className="h-10 w-auto"
+                width="40"
+                height="40"
+                loading="lazy"
               />
             </Link>
           </div>

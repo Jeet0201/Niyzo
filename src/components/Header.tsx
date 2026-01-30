@@ -34,7 +34,7 @@ const Header = () => {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center gap-2">
             <a href="/" className="flex items-center">
-              <img src="/niyzo-logo.svg" alt="NIYZO" className="h-8 w-auto" />
+              <img src="/niyzo-logo.svg" alt="NIYZO" className="h-8 w-auto" width="32" height="32" loading="lazy" />
             </a>
           </div>
 

@@ -224,6 +224,9 @@ const StudentQuestionForm: React.FC = () => {
                               src={mentor.imageUrl}
                               alt={mentor.name}
                               className="absolute inset-0 w-full h-full object-cover"
+                              width="64"
+                              height="64"
+                              loading="lazy"
                               onError={(e) => {
                                 e.currentTarget.style.display = 'none';
                                 const fallback = e.currentTarget.nextElementSibling as HTMLElement | null;

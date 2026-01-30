@@ -90,6 +90,9 @@ const SimpleMentorSection = () => {
                       src={mentor.profileImage}
                       alt={`${mentor.name} profile`}
                       className="w-full h-full rounded-full object-cover"
+                      width="80"
+                      height="80"
+                      loading="lazy"
                       onError={(e) => {
                         // Hide image on error and show fallback
                         e.currentTarget.style.display = 'none';

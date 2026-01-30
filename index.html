@@ -4,14 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Preload critical fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <meta name="google-site-verification" content="6xtMxITPvBveoRiHHf3ToKeDuhxNQT2-DAxoUQS5bWw" />
     
     <title>Niyzo – Proof Not Promises</title>
     <meta name="description" content="Niyzo helps students connect with mentors and get answers to real academic questions." />
     <meta name="author" content="NIYZO" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <meta property="og:title" content="YouthSolve - Proof, Not Promises" />
     <meta property="og:description" content="Verified learning powered by real professors. Join YouthSolve's exclusive pilot program." />
@@ -21,10 +23,26 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <!-- Critical CSS inline -->
+    <style>
+      body{margin:0;font-family:Inter,sans-serif;background:#fff}#root{min-height:100vh}.loading{display:flex;align-items:center;justify-content:center;min-height:100vh}
+    </style>
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="loading">
+        <div style="width:40px;height:40px;border:4px solid #f3f3f3;border-top:4px solid #000;border-radius:50%;animation:spin 1s linear infinite"></div>
+      </div>
+    </div>
+    
+    <!-- Main app script -->
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Loading animation -->
+    <style>
+      @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+    </style>
   </body>
 </html>

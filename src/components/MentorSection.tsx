@@ -156,6 +156,9 @@ const MentorSection = () => {
                       src={mentor.profileImage}
                       alt={`${mentor.name} profile`}
                       className="w-full h-full rounded-full object-cover"
+                      width="80"
+                      height="80"
+                      loading="lazy"
                       onError={handleImageError}
                     />
                   ) : null}
