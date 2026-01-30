@@ -74,8 +74,8 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-card border-t border-border">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+          <div className="md:hidden bg-card border-t border-border fixed inset-x-0 bottom-0 top-16 max-h-[calc(100vh-4rem)]">
+            <div className="px-2 pt-2 pb-3 space-y-1 h-full overflow-y-auto">
               {navItems.map((item) => (
                 item.href.startsWith('#') ? (
                   <a
@@ -102,7 +102,7 @@ const Header = () => {
               <a
                 href="mailto:niyzo.official@gmail.com"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg bg-primary text-white font-semibold transition-all duration-300 ease-out hover:bg-primary/90 active:scale-95 mt-2"
+                className="block px-4 py-3 rounded-lg bg-white text-gray-900 font-semibold text-center transition-all duration-300 ease-out hover:bg-gray-100 active:scale-95 mt-2 mb-4 shadow-lg"
               >
                 Contact
               </a>
